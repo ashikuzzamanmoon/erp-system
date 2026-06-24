@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Products from "./pages/products/Products";
 import Customers from "./pages/customers/Customers";
@@ -11,21 +14,26 @@ import Reports from "./pages/reports/Reports";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<Products />} />
-          <Route path="customers" element={<Customers />} />
-          <Route path="suppliers" element={<Suppliers />} />
-          <Route path="purchases" element={<Purchases />} />
-          <Route path="sales" element={<Sales />} />
-          <Route path="reports" element={<Reports />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<AppLayout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="products" element={<Products />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="suppliers" element={<Suppliers />} />
+              <Route path="purchases" element={<Purchases />} />
+              <Route path="sales" element={<Sales />} />
+              <Route path="reports" element={<Reports />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

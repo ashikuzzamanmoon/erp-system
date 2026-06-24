@@ -23,35 +23,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export default function Login() {
-  const { signIn } = useAuth();
+export default function Register() {
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     setError(null);
     try {
-      const { error } = await signIn({ email: data.email, password: data.password });
+      const { error } = await signUp({ email: data.email, password: data.password });
       if (error) {
         setError(error.message);
         return;
       }
-      navigate("/dashboard");
+      navigate("/login");
     } catch (err) {
       setError("An unexpected error occurred");
     }
@@ -62,10 +67,10 @@ export default function Login() {
       <Card className="w-full max-w-md shadow-lg border-0">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold tracking-tight text-center">
-            Sign in
+            Create an account
           </CardTitle>
           <CardDescription className="text-center">
-            Enter your email and password to access your account
+            Enter your details below to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,16 +107,29 @@ export default function Login() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button type="submit" className="w-full mt-6" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
+                {form.formState.isSubmitting ? "Creating account..." : "Sign up"}
               </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="flex justify-center border-t p-4 text-sm text-slate-500">
-          Don't have an account?{" "}
-          <Link to="/register" className="ml-1 text-primary hover:underline font-medium">
-            Sign up
+          Already have an account?{" "}
+          <Link to="/login" className="ml-1 text-primary hover:underline font-medium">
+            Sign in
           </Link>
         </CardFooter>
       </Card>
