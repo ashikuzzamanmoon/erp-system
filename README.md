@@ -46,16 +46,6 @@ The database is structured relationally using PostgreSQL (via Supabase). To ensu
 
 ---
 
-## 🤖 Prompting Workflow Summary
-
-My approach to utilizing AI for this assessment was highly iterative, utilizing the AI as a true "Pair Programmer" and "Tech Lead". Rather than attempting zero-shot generation of the entire application, the prompts were broken down into modular, domain-specific tasks.
-
-1. **Foundation & Scaffolding:** Initial prompts were focused on configuring the boilerplate (Vite + React + TS), setting up the Tailwind/Shadcn design tokens, and establishing the Supabase connection.
-2. **Schema & Triggers:** I utilized AI to generate strict SQL schemas, including the complex PostgreSQL trigger functions required to handle the automated stock deductions and additions dynamically.
-3. **Component Iteration:** Prompts were scoped to individual modules (e.g., *"Build a CRUD interface for Suppliers using Shadcn DataTables"*). This ensured that code context windows were kept minimal and the AI produced highly accurate code.
-4. **Refinement & Polish:** Once core requirements were met, I used conversational prompting to audit the codebase for missing edge cases (missing dashboard metrics, fast-refresh bugs, or missing RLS policies). Finally, I prompted the AI to implement premium UI features, such as Recharts data visualization and a fluid Dark Mode toggle, elevating the project to production-grade quality.
-
----
 
 ## 🚀 Getting Started
 
