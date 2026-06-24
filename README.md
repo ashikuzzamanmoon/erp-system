@@ -1,4 +1,4 @@
-# 🚀 Code Bondhu Mini ERP System
+# 🚀 ERP System
 
 An ultra-modern, fully functional Enterprise Resource Planning (ERP) dashboard. 
 
