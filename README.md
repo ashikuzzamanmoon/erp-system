@@ -16,10 +16,6 @@ This application demonstrates a deep understanding of modern web architecture an
   * **Sales:** Automatic stock deductions upon successful sale entries.
 * **Printable Invoices:** Beautiful, automatically generated point-of-sale invoices ready for printing or saving as PDF.
 * **Reporting & Analytics:** Tabular breakdowns of Inventory, Sales, Purchases, Customers, and Suppliers with one-click **CSV Exports**.
-* **The "Wow" Factor (UI/UX):** 
-  * Premium, responsive design system.
-  * Native **Dark Mode** toggle integrated with system preferences.
-  * Space-saving **Collapsible Sidebar** inspired by modern desktop applications.
 
 ---
 
