@@ -125,10 +125,7 @@ export default function Products() {
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>{product.sku}</TableCell>
                   <TableCell>
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    }).format(product.price)}
+                    ৳{product.price.toFixed(2)}
                   </TableCell>
                   <TableCell>{product.stock_quantity}</TableCell>
                   <TableCell className="text-right">
