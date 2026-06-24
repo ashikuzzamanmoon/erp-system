@@ -1,17 +1,23 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
 export default function AppLayout() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-background">
       {/* Sidebar - hidden on mobile, fixed width on desktop */}
-      <div className="hidden md:flex md:w-64 md:flex-col print:hidden">
-        <Sidebar />
+      <div 
+        className={`hidden md:flex flex-col print:hidden transition-all duration-300 ease-in-out ${
+          isSidebarCollapsed ? "w-20" : "w-64"
+        }`}
+      >
+        <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in-out">
         <div className="print:hidden">
           <Header />
         </div>

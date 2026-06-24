@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Bell, LogOut, Menu, Search, User } from "lucide-react";
+import { LogOut, Menu, User } from "lucide-react";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { useAuth } from "../../contexts/AuthContext";
 import { navigation } from "./Sidebar";
+import { ModeToggle } from "../mode-toggle";
 import {
   Sheet,
   SheetContent,
@@ -55,10 +55,9 @@ export default function Header() {
                     to={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={({ isActive }) =>
-                      `group flex items-center rounded-md p-3 text-sm font-medium transition-all duration-200 ${
-                        isActive
-                          ? "bg-primary text-white shadow-md"
-                          : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                      `group flex items-center rounded-md p-3 text-sm font-medium transition-all duration-200 ${isActive
+                        ? "bg-primary text-white shadow-md"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                       }`
                     }
                   >
@@ -79,19 +78,7 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="relative hidden w-64 md:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="w-full rounded-full bg-background pl-8"
-          />
-        </div>
-        
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-destructive border-2 border-card" />
-        </Button>
+        <ModeToggle />
 
         <div className="flex items-center gap-2">
           <DropdownMenu>

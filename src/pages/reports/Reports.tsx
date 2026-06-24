@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Download, Loader2 } from 'lucide-react';
 import { getProducts } from '../../api/products';
+import { getCustomers } from '../../api/customers';
+import { getSuppliers } from '../../api/suppliers';
 import { getSales, getPurchases } from '../../api/transactions';
 import { exportToCSV } from '../../utils/export';
 import { Button } from '@/components/ui/button';
@@ -28,6 +30,16 @@ export default function Reports() {
   const { data: purchases, isLoading: purchasesLoading } = useQuery({
     queryKey: ['purchases'],
     queryFn: getPurchases,
+  });
+
+  const { data: customers, isLoading: customersLoading } = useQuery({
+    queryKey: ['customers'],
+    queryFn: getCustomers,
+  });
+
+  const { data: suppliers, isLoading: suppliersLoading } = useQuery({
+    queryKey: ['suppliers'],
+    queryFn: getSuppliers,
   });
 
   const handleExportProducts = () => {
@@ -71,6 +83,33 @@ export default function Reports() {
     exportToCSV(exportData, 'purchases_report');
   };
 
+  const handleExportCustomers = () => {
+    if (!customers) return;
+    const exportData = customers.map((c) => ({
+      ID: c.id,
+      Name: c.name,
+      Email: c.email || 'N/A',
+      Phone: c.phone || 'N/A',
+      Address: c.address || 'N/A',
+      Registered: new Date(c.created_at).toLocaleString(),
+    }));
+    exportToCSV(exportData, 'customers_report');
+  };
+
+  const handleExportSuppliers = () => {
+    if (!suppliers) return;
+    const exportData = suppliers.map((s) => ({
+      ID: s.id,
+      Name: s.name,
+      ContactPerson: s.contact_person || 'N/A',
+      Email: s.email || 'N/A',
+      Phone: s.phone || 'N/A',
+      Address: s.address || 'N/A',
+      Registered: new Date(s.created_at).toLocaleString(),
+    }));
+    exportToCSV(exportData, 'suppliers_report');
+  };
+
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2 mb-6">
@@ -78,10 +117,12 @@ export default function Reports() {
       </div>
 
       <Tabs defaultValue="inventory" className="w-full space-y-4">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[600px]">
+        <TabsList className="grid w-full grid-cols-5 lg:w-[800px]">
           <TabsTrigger value="inventory">Inventory Report</TabsTrigger>
           <TabsTrigger value="sales">Sales Report</TabsTrigger>
           <TabsTrigger value="purchases">Purchase Report</TabsTrigger>
+          <TabsTrigger value="customers">Customer Report</TabsTrigger>
+          <TabsTrigger value="suppliers">Supplier Report</TabsTrigger>
         </TabsList>
 
         <TabsContent value="inventory" className="space-y-4">
@@ -183,6 +224,76 @@ export default function Reports() {
                     <TableCell>{purchase.product?.name || 'Unknown'}</TableCell>
                     <TableCell>{purchase.status || 'Received'}</TableCell>
                     <TableCell className="text-right font-medium text-red-600">৳{purchase.total_amount.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="customers" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-medium">Customer List</h3>
+            <Button onClick={handleExportCustomers} variant="outline" disabled={customersLoading || !customers?.length}>
+              <Download className="mr-2 h-4 w-4" />
+              Export to CSV
+            </Button>
+          </div>
+          <div className="rounded-md border bg-card">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Registered</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {customersLoading ? (
+                  <TableRow><TableCell colSpan={4} className="text-center h-24"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></TableCell></TableRow>
+                ) : customers?.map((customer) => (
+                  <TableRow key={customer.id}>
+                    <TableCell className="font-medium">{customer.name}</TableCell>
+                    <TableCell>{customer.email || 'N/A'}</TableCell>
+                    <TableCell>{customer.phone || 'N/A'}</TableCell>
+                    <TableCell>{new Date(customer.created_at).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="suppliers" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-medium">Supplier List</h3>
+            <Button onClick={handleExportSuppliers} variant="outline" disabled={suppliersLoading || !suppliers?.length}>
+              <Download className="mr-2 h-4 w-4" />
+              Export to CSV
+            </Button>
+          </div>
+          <div className="rounded-md border bg-card">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Person</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Registered</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {suppliersLoading ? (
+                  <TableRow><TableCell colSpan={5} className="text-center h-24"><Loader2 className="h-6 w-6 animate-spin mx-auto" /></TableCell></TableRow>
+                ) : suppliers?.map((supplier) => (
+                  <TableRow key={supplier.id}>
+                    <TableCell className="font-medium">{supplier.name}</TableCell>
+                    <TableCell>{supplier.contact_person || 'N/A'}</TableCell>
+                    <TableCell>{supplier.email || 'N/A'}</TableCell>
+                    <TableCell>{supplier.phone || 'N/A'}</TableCell>
+                    <TableCell>{new Date(supplier.created_at).toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

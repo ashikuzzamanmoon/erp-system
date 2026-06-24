@@ -18,7 +18,7 @@ export function InvoicePrintable({ sale }: InvoicePrintableProps) {
           </div>
           <div className="text-right">
             <div className="text-2xl font-bold tracking-tight text-slate-900">Code Bondhu ERP</div>
-            <p className="text-sm text-slate-500">123 Tech Avenue, Suite 100</p>
+            <p className="text-sm text-slate-500">Dhaka, Bangladesh</p>
           </div>
         </div>
 

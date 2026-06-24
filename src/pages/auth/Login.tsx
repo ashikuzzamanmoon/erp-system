@@ -52,7 +52,7 @@ export default function Login() {
         return;
       }
       navigate("/dashboard");
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     }
   };
