@@ -117,12 +117,12 @@ export default function Reports() {
       </div>
 
       <Tabs defaultValue="inventory" className="w-full space-y-4">
-        <TabsList className="grid w-full grid-cols-5 lg:w-[800px]">
-          <TabsTrigger value="inventory">Inventory Report</TabsTrigger>
-          <TabsTrigger value="sales">Sales Report</TabsTrigger>
-          <TabsTrigger value="purchases">Purchase Report</TabsTrigger>
-          <TabsTrigger value="customers">Customer Report</TabsTrigger>
-          <TabsTrigger value="suppliers">Supplier Report</TabsTrigger>
+        <TabsList className="flex w-full justify-start overflow-x-auto flex-nowrap scrollbar-hide">
+          <TabsTrigger value="inventory" className="whitespace-nowrap">Inventory Report</TabsTrigger>
+          <TabsTrigger value="sales" className="whitespace-nowrap">Sales Report</TabsTrigger>
+          <TabsTrigger value="purchases" className="whitespace-nowrap">Purchase Report</TabsTrigger>
+          <TabsTrigger value="customers" className="whitespace-nowrap">Customer Report</TabsTrigger>
+          <TabsTrigger value="suppliers" className="whitespace-nowrap">Supplier Report</TabsTrigger>
         </TabsList>
 
         <TabsContent value="inventory" className="space-y-4">
