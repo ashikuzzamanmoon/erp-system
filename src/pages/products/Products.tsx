@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2, Pencil, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 import { getProducts, deleteProduct, type Product } from '../../api/products';
 import { Button } from '../../components/ui/button';
 import {
@@ -27,6 +29,10 @@ export default function Products() {
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      toast.success('Product deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to delete product: ${error.message}`);
     },
   });
 
@@ -41,9 +47,18 @@ export default function Products() {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      deleteMutation.mutate(id);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(id);
+      }
+    });
   };
 
   return (

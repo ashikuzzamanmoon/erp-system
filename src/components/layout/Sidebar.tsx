@@ -9,7 +9,7 @@ import {
   BarChart,
 } from "lucide-react";
 
-const navigation = [
+export const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/products", icon: Package },
   { name: "Customers", href: "/customers", icon: Users },

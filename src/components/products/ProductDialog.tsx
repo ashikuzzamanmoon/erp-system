@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { type Product, createProduct, updateProduct, uploadProductImage } from '../../api/products';
 import { Button } from '../ui/button';
@@ -81,7 +82,11 @@ export function ProductDialog({ isOpen, onClose, product }: ProductDialogProps) 
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      toast.success(product ? 'Product updated successfully' : 'Product created successfully');
       onClose();
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
     },
   });
 
